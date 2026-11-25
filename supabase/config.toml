@@ -1,0 +1,13 @@
+project_id = "ydbrykjuovbfzbzrmpji"
+
+[functions.create-wishlist]
+verify_jwt = false
+
+[functions.list-wishlists]
+verify_jwt = false
+
+[functions.edit-wishlist]
+verify_jwt = false
+
+[functions.admin-wishlists]
+verify_jwt = false
