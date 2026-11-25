@@ -1,4 +1,4 @@
-import type { Wishlist } from "../types";
+﻿import type { Wishlist, WishlistComment } from "../types";
 
 const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL as string | undefined;
 const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined;
@@ -26,11 +26,27 @@ async function callFunction<T>(name: string, body?: unknown, method = "POST"): P
 export const api = {
   create: (payload: { name: string; gift: string; url: string; notes: string }) =>
     callFunction<{ token: string }>("create-wishlist", payload),
+
   list: () => callFunction<{ items: Wishlist[] }>("list-wishlists", undefined, "GET"),
+
   edit: (payload: { token: string; name: string; gift: string; url: string; notes: string }) =>
     callFunction<{ ok: true }>("edit-wishlist", payload),
+
   admin: (payload: Record<string, unknown>) =>
-    callFunction<{ items?: Wishlist[]; ok?: true }>("admin-wishlists", payload)
+    callFunction<{ items?: Wishlist[]; ok?: true }>("admin-wishlists", payload),
+
+  comments: (wishlistId: string) =>
+    callFunction<{ comments: WishlistComment[] }>(
+      `wishlist-comments?wishlist_id=${encodeURIComponent(wishlistId)}`,
+      undefined,
+      "GET"
+    ),
+
+  addComment: (wishlistId: string, body: string) =>
+    callFunction<{ comment: WishlistComment }>("wishlist-comments", {
+      wishlist_id: wishlistId,
+      body
+    })
 };
 
 export function friendlyError(error: unknown): string {
