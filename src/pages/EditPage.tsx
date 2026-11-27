@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { CheckCircle2, Save, Trash2 } from "lucide-react";
 import Field from "../components/Field";
@@ -10,12 +10,12 @@ export default function EditPage() {
   const [gift, setGift] = useState("");
   const [url, setUrl] = useState("");
   const [notes, setNotes] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState("");
   const [hidden, setHidden] = useState(false);
   const [error, setError] = useState("");
 
-  async function submit(e: React.FormEvent) {
+  useEffect(() => {\n    let active = true;\n    api.getOwn(token).then(({ item }) => {\n      if (!active) return;\n      setName(item.name); setGift(item.gift); setUrl(item.url ?? ""); setNotes(item.notes ?? "");\n      setHidden(Boolean(item.hidden_at));\n    }).catch(err => { if (active) setError(friendlyError(err)); })\n      .finally(() => { if (active) setLoading(false); });\n    return () => { active = false; };\n  }, [token]);\n\n  async function submit(e: React.FormEvent) {
     e.preventDefault(); setLoading(true); setError(""); setMessage("");
     try {
       await api.edit({ token, name: name.trim(), gift: gift.trim(), url: url.trim(), notes: notes.trim() });
