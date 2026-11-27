@@ -15,7 +15,18 @@ export default function EditPage() {
   const [hidden, setHidden] = useState(false);
   const [error, setError] = useState("");
 
-  useEffect(() => {\n    let active = true;\n    api.getOwn(token).then(({ item }) => {\n      if (!active) return;\n      setName(item.name); setGift(item.gift); setUrl(item.url ?? ""); setNotes(item.notes ?? "");\n      setHidden(Boolean(item.hidden_at));\n    }).catch(err => { if (active) setError(friendlyError(err)); })\n      .finally(() => { if (active) setLoading(false); });\n    return () => { active = false; };\n  }, [token]);\n\n  async function submit(e: React.FormEvent) {
+  useEffect(() => {
+    let active = true;
+    api.getOwn(token).then(({ item }) => {
+      if (!active) return;
+      setName(item.name); setGift(item.gift); setUrl(item.url ?? ""); setNotes(item.notes ?? "");
+      setHidden(Boolean(item.hidden_at));
+    }).catch(err => { if (active) setError(friendlyError(err)); })
+      .finally(() => { if (active) setLoading(false); });
+    return () => { active = false; };
+  }, [token]);
+
+  async function submit(e: React.FormEvent) {
     e.preventDefault(); setLoading(true); setError(""); setMessage("");
     try {
       await api.edit({ token, name: name.trim(), gift: gift.trim(), url: url.trim(), notes: notes.trim() });
@@ -35,7 +46,7 @@ export default function EditPage() {
   return <section className="narrow-page">
     <div className="page-intro"><div className="eyebrow">MIKOŁAJKI SZKOLNE</div><h1>Edytuj wpis</h1><p>Zmień dane i zapisz formularz.</p></div>
     <div className="form-card standalone">
-      {hidden ? <div className="success-panel"><CheckCircle2 size={34} /><h3>Wpis ukryty</h3><p>Twój wpis nie jest już widoczny na publicznej liście. Administrator może go przywrócić.</p></div> : <form onSubmit={submit}>
+      {loading ? <p>Ładowanie wpisu...</p> : hidden ? <div className="success-panel"><CheckCircle2 size={34} /><h3>Wpis ukryty</h3><p>Twój wpis nie jest już widoczny na publicznej liście. Administrator może go przywrócić.</p></div> : <form onSubmit={submit}>
         <Field label="Imię" value={name} onChange={setName} required />
         <Field label="Prezent" value={gift} onChange={setGift} required />
         <Field label="Link do prezentu" value={url} onChange={setUrl} type="url" />
