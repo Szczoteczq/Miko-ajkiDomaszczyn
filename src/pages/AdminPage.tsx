@@ -28,9 +28,13 @@ export default function AdminPage() {
     try { const result = await admin({ action: "list" }); setItems(result.items ?? []); }
     catch { setAuthenticated(false); }
   }
-  async function remove(item: Wishlist) {
-    if (!window.confirm(`Usunąć życzenie użytkownika ${item.name}? Tej operacji nie można cofnąć.`)) return;
-    try { await admin({ action: "delete", id: item.id }); await refresh(); }
+  async function toggleHidden(item: Wishlist) {
+    const action = item.hidden_at ? "restore" : "hide";
+    const prompt = item.hidden_at
+      ? `Przywrócić wpis użytkownika ${item.name} na publiczną listę?`
+      : `Ukryć wpis użytkownika ${item.name}? Możesz go później przywrócić.`;
+    if (!window.confirm(prompt)) return;
+    try { await admin({ action, id: item.id }); await refresh(); }
     catch {}
   }
   async function saveEdit(e: React.FormEvent) {
@@ -54,12 +58,12 @@ export default function AdminPage() {
 
   return <section className="content-page">
     <div className="admin-heading"><div><div className="eyebrow">ZARZĄDZANIE WPISAMI</div><h1>Panel administratora</h1></div><button className="icon-button" onClick={() => void refresh()}><RefreshCw size={17} /></button></div>
-    <div className="admin-stats"><b>{items.length}</b><span>wpisów</span></div>
+    <div className="admin-stats"><b>{items.length}</b><span>wpisów (w tym ukryte)</span></div>
     <div className="list-toolbar"><div className="search-box"><input value={query} onChange={e => setQuery(e.target.value)} placeholder="Szukaj..." /></div><button className="button secondary" onClick={() => { setAuthenticated(false); setPassword(""); }}>Wyloguj</button></div>
     {error && <p className="error">{error}</p>}
     <div className="admin-list">{filtered.map(item => <div className="admin-row" key={item.id}>
-      <div className="admin-item"><b>{item.name}</b><span>{item.gift}</span><small>Dodano: {new Date(item.created_at).toLocaleString("pl-PL")}</small></div>
-      <div className="admin-actions"><button className="icon-button" title="Edytuj" onClick={() => setEditing(item)}><Pencil size={16} /></button><button className="icon-button danger-icon" title="Usuń" onClick={() => void remove(item)}><Trash2 size={16} /></button></div>
+      <div className="admin-item"><b>{item.name} {item.hidden_at && <span>· UKRYTE</span>}</b><span>{item.gift}</span><small>Dodano: {new Date(item.created_at).toLocaleString("pl-PL")}</small></div>
+      <div className="admin-actions"><button className="icon-button" title="Edytuj" onClick={() => setEditing(item)}><Pencil size={16} /></button><button className="icon-button" title={item.hidden_at ? "Przywróć" : "Ukryj"} onClick={() => void toggleHidden(item)}>{item.hidden_at ? <RefreshCw size={16} /> : <Trash2 size={16} />}</button></div>
     </div>)}</div>
     {editing && <div className="modal-backdrop"><div className="form-card modal-card">
       <div className="modal-title"><h2>Edytuj wpis</h2><button className="icon-button" onClick={() => setEditing(null)}><X size={18} /></button></div>
