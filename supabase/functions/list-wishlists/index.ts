@@ -8,7 +8,8 @@ Deno.serve(async (req) => {
     const supabase = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
     const { data, error } = await supabase.from("wishlists")
       .select("id,name,gift,url,notes,created_at,updated_at")
-      .is("hidden_at", null)\n      .order("created_at", { ascending: false });
+      .is("hidden_at", null)
+      .order("created_at", { ascending: false });
     if (error) throw error;
     return json({ items: data ?? [] });
   } catch (e) {
