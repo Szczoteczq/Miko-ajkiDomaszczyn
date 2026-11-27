@@ -6,6 +6,7 @@
   notes: string | null;
   created_at: string;
   updated_at: string;
+  hidden_at?: string | null;
 };
 
 export type WishlistComment = {
