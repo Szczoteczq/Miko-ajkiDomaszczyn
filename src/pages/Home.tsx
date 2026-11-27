@@ -19,7 +19,7 @@ export default function Home() {
     setLoading(true);
     try {
       const result = await api.create({ name: name.trim(), gift: gift.trim(), url: url.trim(), notes: notes.trim() });
-      setEditUrl(`${window.location.origin}/Edytuj/${result.token}`);
+      setEditUrl(`${window.location.origin}${window.location.pathname}#/Edytuj/${result.token}`);
       setName(""); setGift(""); setUrl(""); setNotes("");
     } catch (err) {
       setError(friendlyError(err));
