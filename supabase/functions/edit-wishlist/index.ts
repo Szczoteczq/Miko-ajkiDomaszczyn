@@ -17,7 +17,7 @@ Deno.serve(async (req) => {
       return json({ error: "Sprawdź poprawność formularza i linku." }, 400);
     }
     const supabase = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
-    const update = action === "hide"
+    if (action === "get") {\n      const { data, error } = await supabase.from("wishlists")\n        .select("name,gift,url,notes,hidden_at")\n        .eq("edit_token_hash", await sha256(token)).maybeSingle();\n      if (error) throw error;\n      if (!data) return json({ error: "Nieprawidłowy link edycji." }, 404);\n      return json({ item: data });\n    }\n    if (action !== "hide" && action !== "update") return json({ error: "Nieznana operacja." }, 400);\n    const update = action === "hide"
       ? { hidden_at: new Date().toISOString() }
       : { name, gift, url: url || null, notes: notes || null, updated_at: new Date().toISOString() };
     const { data, error } = await supabase.from("wishlists")
