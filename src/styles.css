@@ -310,3 +310,43 @@ button, input, textarea { min-width: 0; }
   }
 }
 
+
+
+/* Theme switch */
+.header-controls{display:flex;align-items:center;gap:18px}
+.theme-toggle{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:38px;padding:0 12px;border:1px solid #ffffff35;border-radius:10px;background:#ffffff10;color:#f8f5e9;font-size:12px;font-weight:700;cursor:pointer;transition:background .2s,border-color .2s}
+.theme-toggle:hover{background:#ffffff20}
+@media(max-width:600px){.header-controls{width:100%;justify-content:space-between;gap:10px}.header-controls nav{width:auto;gap:16px}.theme-toggle{min-height:36px;padding:0 10px}}
+.dark-mode body{background:radial-gradient(ellipse at 15% 10%,#202d3b 0,transparent 38%),radial-gradient(ellipse at 90% 85%,#202b39 0,transparent 35%),#111821;color:#edf0f5}
+.dark-mode .topbar{border-bottom-color:#ffffff20}
+.dark-mode .brand-light,.dark-mode .topbar nav{color:#aeb9c8}
+.dark-mode .topbar nav a:hover,.dark-mode .topbar nav a.active{color:#fff}
+.dark-mode .form-card,.dark-mode .wish-card,.dark-mode .admin-list{background:#202b38;color:#edf0f5;box-shadow:0 18px 45px #0005}
+.dark-mode .field>span{color:#cbd4df}
+.dark-mode .field input,.dark-mode .field textarea,.dark-mode .search-box input,.dark-mode .copy-row input,.dark-mode .comment-form textarea{background:#151e29;color:#edf0f5;border-color:#3a4859}
+.dark-mode .field input::placeholder,.dark-mode .field textarea::placeholder,.dark-mode input::placeholder,.dark-mode textarea::placeholder{color:#8997a8}
+.dark-mode .heading-icon,.dark-mode .admin-lock,.dark-mode .gift-bubble{background:#344252;color:#e3b978}
+.dark-mode .button.secondary{background:#354354;color:#edf0f5}
+.dark-mode .button.secondary:hover{background:#425368}
+.dark-mode .success-panel,.dark-mode .success-panel h3{color:#a8dfbd}
+.dark-mode .success-panel p,.dark-mode .form-footnote{color:#aab5c2}
+.dark-mode .page-intro p,.dark-mode .lead{color:#b7c2d0}
+.dark-mode .wish-card p,.dark-mode .wish-date,.dark-mode .admin-item small{color:#aab5c2}
+.dark-mode .wish-person{color:#e3b978}
+.dark-mode .wish-actions{border-top-color:#ffffff20}
+.dark-mode .comments-section{background:#17212d}
+.dark-mode .comments-heading,.dark-mode .comment-meta strong,.dark-mode .comment-content p{color:#e3eaf2}
+.dark-mode .comment-item{border-bottom-color:#ffffff20}
+.dark-mode .comment-avatar{background:#344252;color:#d4dfeb}
+.dark-mode .comment-meta span,.dark-mode .comments-status,.dark-mode .comment-form-bottom>span{color:#9eacbc}
+.dark-mode .comment-form textarea{color:#edf0f5}
+.dark-mode .admin-row{border-bottom-color:#ffffff20}
+.dark-mode .admin-item b,.dark-mode .admin-item span{color:#edf0f5}
+.dark-mode .admin-actions .icon-button{color:#cbd5e1;border-color:#526174}
+.dark-mode .modal-card.form-card{background:#202b38;color:#edf0f5}
+.dark-mode .modal-title .icon-button{color:#edf0f5;border-color:#526174}
+.dark-mode .empty-state{color:#b7c2d0}
+.dark-mode .empty-state b{color:#edf0f5}
+.dark-mode .search-box{background:#202b38;color:#b7c2d0}
+.dark-mode .privacy-note,.dark-mode footer{color:#9aa8b8}
+.dark-mode .text-link{color:#e3b978;border-color:#e3b97866}
