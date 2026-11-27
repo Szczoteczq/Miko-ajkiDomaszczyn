@@ -25,7 +25,7 @@ Vite pokaże adres, zwykle `http://localhost:5173`.
 
 W Supabase otwórz **SQL Editor**, wklej całą zawartość pliku:
 
-`supabase/migrations/001_create_wishlists.sql`
+`supabase/migrations/001_create_wishlists.sql` oraz `supabase/migrations/002_soft_hide_wishlists.sql`
 
 Uruchom zapytanie.
 
@@ -53,6 +53,8 @@ supabase functions deploy create-wishlist
 supabase functions deploy list-wishlists
 supabase functions deploy edit-wishlist
 supabase functions deploy admin-wishlists
+supabase functions deploy edit-wishlist
+supabase functions deploy list-wishlists
 ```
 
 Ważne: w projekcie Supabase musi być dostępne `SUPABASE_URL` i `SUPABASE_SERVICE_ROLE_KEY` jako sekrety funkcji (Supabase udostępnia je domyślnie w środowisku Edge Functions).
@@ -70,5 +72,6 @@ Ważne: w projekcie Supabase musi być dostępne `SUPABASE_URL` i `SUPABASE_SERV
 
 - `/` — dodawanie życzenia
 - `/Lista` — publiczna lista z wyszukiwaniem
-- `/Edytuj/:token` — edycja przez prywatny link
+- `/Edytuj/:token` — edycja i ukrywanie własnego wpisu przez prywatny link
+- Ukryte wpisy znikają z publicznej listy, ale administrator może je przywrócić w panelu.
 - `/Admin` — panel organizatora
