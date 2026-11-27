@@ -14,13 +14,15 @@ Deno.serve(async (req) => {
     const action = String(body.action ?? "");
     if (action === "list") {
       const { data, error } = await supabase.from("wishlists")
-        .select("id,name,gift,url,notes,created_at,updated_at")
+        .select("id,name,gift,url,notes,created_at,updated_at,hidden_at")
         .order("created_at", { ascending: false });
       if (error) throw error;
       return json({ items: data ?? [] });
     }
-    if (action === "delete") {
-      const { error } = await supabase.from("wishlists").delete().eq("id", String(body.id ?? ""));
+    if (action === "hide" || action === "restore") {
+      const { error } = await supabase.from("wishlists")
+        .update({ hidden_at: action === "hide" ? new Date().toISOString() : null })
+        .eq("id", String(body.id ?? ""));
       if (error) throw error;
       return json({ ok: true });
     }
