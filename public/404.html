@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Przekierowanie…</title>
+    <script>
+      (function () {
+        var base = "/Miko-ajkiDomaszczyn/";
+        var route = window.location.pathname;
+        if (route.indexOf(base) === 0) route = route.slice(base.length);
+        route = route.replace(/^\/+/, "");
+        window.location.replace(base + "#/" + route + window.location.search + window.location.hash);
+      })();
+    </script>
+  </head>
+  <body>Przekierowywanie…</body>
+</html>
