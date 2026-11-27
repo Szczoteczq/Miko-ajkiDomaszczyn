@@ -29,6 +29,9 @@ export const api = {
 
   list: () => callFunction<{ items: Wishlist[] }>("list-wishlists", undefined, "GET"),
 
+  getOwn: (token: string) =>
+    callFunction<{ item: { name: string; gift: string; url: string | null; notes: string | null; hidden_at: string | null } }>("edit-wishlist", { token, action: "get" }),
+
   edit: (payload: { token: string; name: string; gift: string; url: string; notes: string }) =>
     callFunction<{ ok: true }>("edit-wishlist", payload),
 
