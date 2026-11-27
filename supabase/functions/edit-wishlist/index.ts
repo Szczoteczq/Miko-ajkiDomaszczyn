@@ -13,11 +13,20 @@ Deno.serve(async (req) => {
     const url = String(body.url ?? "").trim();
     const notes = String(body.notes ?? "").trim();
     if (token.length < 30) return json({ error: "Nieprawidłowy link edycji." }, 400);
-    if (action !== "hide" && (!name || name.length > 60 || !gift || gift.length > 180 || notes.length > 500 || !validUrl(url))) {
+    if (action === "update" && (!name || name.length > 60 || !gift || gift.length > 180 || notes.length > 500 || !validUrl(url))) {
       return json({ error: "Sprawdź poprawność formularza i linku." }, 400);
     }
     const supabase = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
-    if (action === "get") {\n      const { data, error } = await supabase.from("wishlists")\n        .select("name,gift,url,notes,hidden_at")\n        .eq("edit_token_hash", await sha256(token)).maybeSingle();\n      if (error) throw error;\n      if (!data) return json({ error: "Nieprawidłowy link edycji." }, 404);\n      return json({ item: data });\n    }\n    if (action !== "hide" && action !== "update") return json({ error: "Nieznana operacja." }, 400);\n    const update = action === "hide"
+    if (action === "get") {
+      const { data, error } = await supabase.from("wishlists")
+        .select("name,gift,url,notes,hidden_at")
+        .eq("edit_token_hash", await sha256(token)).maybeSingle();
+      if (error) throw error;
+      if (!data) return json({ error: "Nieprawidłowy link edycji." }, 404);
+      return json({ item: data });
+    }
+    if (action !== "hide" && action !== "update") return json({ error: "Nieznana operacja." }, 400);
+    const update = action === "hide"
       ? { hidden_at: new Date().toISOString() }
       : { name, gift, url: url || null, notes: notes || null, updated_at: new Date().toISOString() };
     const { data, error } = await supabase.from("wishlists")
