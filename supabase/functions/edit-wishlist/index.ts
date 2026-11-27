@@ -7,16 +7,21 @@ Deno.serve(async (req) => {
   try {
     const body = await req.json();
     const token = String(body.token ?? "");
+    const action = String(body.action ?? "update");
     const name = String(body.name ?? "").trim();
     const gift = String(body.gift ?? "").trim();
     const url = String(body.url ?? "").trim();
     const notes = String(body.notes ?? "").trim();
-    if (token.length < 30 || !name || name.length > 60 || !gift || gift.length > 180 || notes.length > 500 || !validUrl(url)) {
+    if (token.length < 30) return json({ error: "Nieprawidłowy link edycji." }, 400);
+    if (action !== "hide" && (!name || name.length > 60 || !gift || gift.length > 180 || notes.length > 500 || !validUrl(url))) {
       return json({ error: "Sprawdź poprawność formularza i linku." }, 400);
     }
     const supabase = createClient(Deno.env.get("SUPABASE_URL")!, Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!);
+    const update = action === "hide"
+      ? { hidden_at: new Date().toISOString() }
+      : { name, gift, url: url || null, notes: notes || null, updated_at: new Date().toISOString() };
     const { data, error } = await supabase.from("wishlists")
-      .update({ name, gift, url: url || null, notes: notes || null, updated_at: new Date().toISOString() })
+      .update(update)
       .eq("edit_token_hash", await sha256(token)).select("id").maybeSingle();
     if (error) throw error;
     if (!data) return json({ error: "Nieprawidłowy link edycji." }, 404);
