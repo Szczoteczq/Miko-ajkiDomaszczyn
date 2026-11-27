@@ -53,8 +53,6 @@ supabase functions deploy create-wishlist
 supabase functions deploy list-wishlists
 supabase functions deploy edit-wishlist
 supabase functions deploy admin-wishlists
-supabase functions deploy edit-wishlist
-supabase functions deploy list-wishlists
 ```
 
 Ważne: w projekcie Supabase musi być dostępne `SUPABASE_URL` i `SUPABASE_SERVICE_ROLE_KEY` jako sekrety funkcji (Supabase udostępnia je domyślnie w środowisku Edge Functions).
