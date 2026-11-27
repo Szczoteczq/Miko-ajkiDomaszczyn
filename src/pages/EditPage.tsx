@@ -55,8 +55,7 @@ export default function EditPage() {
         {message && <p className="success-message"><CheckCircle2 size={17} />{message}</p>}
         <button className="button full" disabled={loading}>{loading ? "Zapisywanie..." : "Zapisz zmiany"} <Save size={16} /></button>
         <button type="button" className="button secondary full" disabled={loading} onClick={() => void hideOwnEntry()}><Trash2 size={16} /> Usuń mój wpis z listy</button>
-      </form>
+      </form>}
     </div>
   </section>;
-}
 }
