@@ -32,6 +32,9 @@ export const api = {
   edit: (payload: { token: string; name: string; gift: string; url: string; notes: string }) =>
     callFunction<{ ok: true }>("edit-wishlist", payload),
 
+  hideOwn: (token: string) =>
+    callFunction<{ ok: true }>("edit-wishlist", { token, action: "hide" }),
+
   admin: (payload: Record<string, unknown>) =>
     callFunction<{ items?: Wishlist[]; ok?: true }>("admin-wishlists", payload),
 
